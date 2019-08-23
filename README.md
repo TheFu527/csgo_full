@@ -1,7 +1,9 @@
 HUOJI CSGO对战平台[正在开发]
 #*注意,本开源项目没有客户端反作弊.有真正实力可以商业化搭建的朋友请联系我 邮箱: root@key08.com
 ===============
-写这个项目的时候初衷是为了提高CSGO的水平,以及让有些人有更多可能.
+写这个项目的时候初衷是为了提高国内CSGO的氛围,以及让有些人有更多可能.
+> b站@自动送头机器人https://space.bilibili.com/101385631
+> 与其天天抱怨别人不好.为何不自己体验一下别人的辛苦?
 捐助,你的捐助会让我更有时间开发这个平台:
 ![image](https://github.com/huoji120/csgo_full/blob/master/pic/alipay.jpg)
 ## 功能特点:
@@ -68,3 +70,7 @@ HUOJI CSGO对战平台[正在开发]
 修改里面的 服务器id和服务器通讯密钥
 访问 http://csgo.applinzi.com/ha4k1r_admin/ 点击增加服务器,填写你刚刚增加的服务器id即可拥有比赛服务器!
 run.sh是开服脚本 修改里面的steamkey为你的.放到csgo服务端目录后直接./run.sh即可开服
+## 鸣谢名单
+Mav. GZ.第六人 Ashiterui TwiLight 丝碧湼 LeaderHK 十六夜*夜 HETAO:P 抹茶控毒枭 
+WWXD 北丐 Speturm 鬼岛 我小灰就是要白给 九栋 deemder zzz Lappland 沫辰q Rainbowcolt 
+Rvcyle逆回 麦麦 Ha4k1r 干拉协会会长 以及所有支持过这个项目的朋友.
