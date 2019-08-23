@@ -67,3 +67,4 @@ HUOJI CSGO对战平台[正在开发]
 打开sourcemode/addons/cfg/crow.ini文件
 修改里面的 服务器id和服务器通讯密钥
 访问 http://csgo.applinzi.com/ha4k1r_admin/ 点击增加服务器,填写你刚刚增加的服务器id即可拥有比赛服务器!
+run.sh是开服脚本 修改里面的steamkey为你的.放到csgo服务端目录后直接./run.sh即可开服
