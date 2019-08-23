@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+<head>
+  <meta charset="UTF-8">
+  <title>邀请码列表</title>
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <link rel="stylesheet" href="//{{ request.get_host }}/static/css/font.css">
+  <link rel="stylesheet" href="//{{ request.get_host }}/static/css/xadmin.css">
+  <script src="//{{ request.get_host }}/static/lib/layui/layui.js" charset="utf-8"></script>
+  <script type="text/javascript" src="//{{ request.get_host }}/static/js/xadmin.js"></script>
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+</head>
+
+<body>
+  <div class="x-nav">
+    <span class="layui-breadcrumb">
+      <a href="?p=0">首页</a>
+      <a>
+        <cite>邀请码列表</cite></a>
+    </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+      onclick="location.reload()" title="刷新">
+      <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+  </div>
+  <div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+      <div class="layui-col-md12">
+        <div class="layui-card">
+          <div class="layui-card-body ">
+            <form class="layui-form layui-col-space5">
+              <div class="layui-inline layui-show-xs-block">
+                <input type="text" name="username" placeholder="输入邀请码" autocomplete="off" class="layui-input">
+              </div>
+              <div class="layui-inline layui-show-xs-block">
+                <button class="layui-btn" lay-submit="" type="submit" lay-filter="sreach"><i
+                    class="layui-icon">&#xe615;</i></button>
+              </div>
+            </form>
+          </div>
+          <div class="layui-card-body layui-table-body layui-table-main">
+            <table class="layui-table layui-form">
+              <thead>
+                <tr>
+                  <th>邀请码</th>
+                  <th>是否在使用</th>
+                  <th>使用者名字</th>
+                </tr>
+              </thead>
+              <div id='div_tables'>
+                {% for infos in info %}
+                <tbody>
+                  <tr>
+                    <td>{{ infos.code }}</td>
+                    <td>{{ infos.used }}</td>
+                    <td>{{ infos.name }}</td>
+                  </tr>
+                </tbody>
+                {% endfor %}
+              </div>
+            </table>
+          </div>
+          <div class="layui-card-body ">
+            <div class="page">
+              <div>
+                {% for i in flush %}
+                <a class="num" href="?p={{ i }}">{{ i }}</a>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+<script>
+  $(function () {
+    layui.use('form', function () {
+      var form = layui.form;
+      form.on('submit(sreach)', function (data) {
+        console.log('Search!');
+        location.href = "//{{ request.get_host }}{{ request.path }}?search=" + $("input[ name='username' ]").val()
+        return false;
+      });
+    });
+  })
+</script>
+
+</html>

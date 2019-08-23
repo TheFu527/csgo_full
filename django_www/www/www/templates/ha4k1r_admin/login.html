@@ -1,0 +1,100 @@
+<!doctype html>
+<html class="x-admin-sm">
+
+<head>
+  <meta charset="UTF-8">
+  <title>十年磨一剑，霜刃未曾试</title>
+  <meta name="renderer" content="webkit|ie-comp|ie-stand">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport"
+    content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <link rel="stylesheet" href="//{{ request.get_host }}/static/css/font.css">
+  <link rel="stylesheet" href="//{{ request.get_host }}/static/css/login.css">
+  <link rel="stylesheet" href="//{{ request.get_host }}/static/css/xadmin.css">
+  <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+  <script src="//{{ request.get_host }}/static/lib/layui/layui.js" charset="utf-8"></script>
+  <!--[if lt IE 9]>
+      <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+      <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+
+<body class="login-bg">
+
+  <div class="login layui-anim layui-anim-up">
+    <div class="message">十年磨一剑，霜刃未曾试</div>
+    <div id="darkbannerwrap"></div>
+
+    <form method="post" class="layui-form">
+      <input name="username" placeholder="用户名" type="text" lay-verify="required" class="layui-input">
+      <hr class="hr15">
+      <input name="password" lay-verify="required" placeholder="密码" type="password" class="layui-input">
+      <hr class="hr15">
+      <div class="layui-form-item">
+        <div id="vaptchaContainer" style="width: 300px;height: 36px;">
+          <div class="vaptcha-init-main">
+            <div class="vaptcha-init-loading">
+              <a href="https://www.vaptcha.com" target="_blank">
+                <img src="https://cdn.vaptcha.com/vaptcha-loading.gif" />
+              </a>
+              <span class="vaptcha-text">Vaptcha启动中...</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input value="登录" lay-submit lay-filter="login" style="width:100%;" type="submit">
+      <hr class="hr20">
+    </form>
+  </div>
+  <script src="https://cdn.vaptcha.com/v2.js"></script>
+
+  <script>
+    var canLogin = false;
+    var auth_token = '';
+    vaptcha({
+      //配置参数
+      vid: "{{ g_vaptcha_id }}", // 验证单元id
+      type: 'click', // 展现类型 点击式
+      container: '#vaptchaContainer' // 按钮容器，可为Element 或者 selector
+    }).then(function (vaptchaObj) {
+      vaptchaObj.listen('pass', function () {
+        canLogin = true;
+        auth_token = vaptchaObj.getToken();
+      })
+      vaptchaObj.render()// 调用验证实例 vaptchaObj 的 render 方法加载验证按钮
+    })
+    $(function () {
+      layui.use('form', function () {
+        var form = layui.form;
+        // layer.msg('玩命卖萌中', function(){
+        //   //关闭后的操作
+        //   });
+        //监听提交
+        form.on('submit(login)', function (data) {
+          if (!canLogin || auth_token == '') {
+            layer.msg("请先完成人机验证!");
+            return false;
+          }
+          var json = JSON.stringify(data.field);
+          $.ajax({
+            type: "POST",
+            url: "//{{ request.get_host }}{{ request.path }}login_auth/",
+            data: { json, csrfmiddlewaretoken: '{{ csrf_token  }}', auth: auth_token },
+            success: function (data) {
+              layer.msg(data);
+              if (data == '登陆成功')
+                window.location.href = '//{{ request.get_host }}{{ request.path }}';
+            }
+          });
+          return false;
+        });
+      });
+    })
+  </script>
+  <!-- 底部结束 -->
+</body>
+
+</html>
