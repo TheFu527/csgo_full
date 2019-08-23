@@ -6,7 +6,7 @@ HUOJI CSGO对战平台[正在开发]
 > b站@自动送头机器人https://space.bilibili.com/101385631
 > 与其天天抱怨别人不好.为何不自己体验一下别人的辛苦?
 ## 捐助
-你的捐助会让我更有时间开发这个平台:
+你的捐助会让我更有时间开发这个平台(捐助后请在支付宝里发你的Steamid):
 ![image](https://github.com/huoji120/csgo_full/blob/master/pic/alipay.jpg)
 ## 功能特点:
  + 5人房间系统
