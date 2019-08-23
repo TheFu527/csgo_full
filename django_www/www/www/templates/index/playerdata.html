@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+
+<head style="-webkit-app-region: drag">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>个人战绩</title>
+    <meta name="description" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!--<script>window.$ = window.jQuery = require('./js/jquery.min.js');</script>-->
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="//{{ request.get_host }}/static/js/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="//{{ request.get_host }}/static/css/my-info.css" media="all">
+    <script src="https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.bundle.min.js"></script>
+    <link href="https://cdn.bootcss.com/Chart.js/2.8.0-rc.1/Chart.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <style>
+        .playerAvatar {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            right: 60%;
+            bottom: -20px;
+        }
+
+        .my_table {
+            width: 100%;
+            vertical-align: middle;
+        }
+
+        .rankChart {
+            width: 100%;
+        }
+
+        .dataChart {
+            width: 100%;
+        }
+
+        .myinfo {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body min-width:0px;>
+    <div class="wrapper" id="page_login">
+
+        <div class="myinfo" style="text-align: center;">
+            <img class="playerAvatar" id="playerAvatar"
+                src="//{{ request.get_host }}/static/images/players/default.png">
+            <h2>
+                <a id="player_name">huoji</a>
+            </h2>
+            <p class="title_desc" id="autograph">查无此人</p>
+        </div>
+        <div id="content-login" class="center-box">
+
+            <div class="my_table">
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                击杀
+                            </th>
+                            <th>
+                                死亡
+                            </th>
+                            <th>
+                                KD
+                            </th>
+                            <th>
+                                首杀
+                            </th>
+                            <th>
+                                爆头
+                            </th>
+                            <th>
+                                助攻
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="success">
+                            <td id="kill">
+                                0
+                            </td>
+                            <td id="dead">
+                                0
+                            </td>
+                            <td id="kd">
+                                0
+                            </td>
+                            <td id="first_kill">
+                                0
+                            </td>
+                            <td id="headshot">
+                                0
+                            </td>
+                            <td id="helpshot">
+                                0
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="rankChart">
+                <canvas id="myChart" height="60%"></canvas>
+            </div>
+            <div class="dataChart">
+                <canvas id="myRadar" height="80%"></canvas>
+            </div>
+            <div class="match_table">
+                <table class="table table-condensed table-striped">
+                    <thead>
+                        <tr>
+                            <th>
+                                比赛ID
+                            </th>
+                            <th>
+                                地图
+                            </th>
+                            <th>
+                                时间
+                            </th>
+                            <th>
+                                服务器位置
+                            </th>
+                            <th>
+                                比分
+                            </th>
+                            <th>
+                                红队
+                            </th>
+                            <th>
+                                蓝队
+                            </th>
+                            <th>
+                                demo链接
+                            </th>
+                            <th>
+                                挂壁
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody id='matched_list'>
+                        <!--
+                        <tr class="success">
+                            <td>
+                                900150983cd24fb0d6963f7d28e17f72
+                            </td>
+                            <td>
+                                2019-8-08-17-24-09
+                            </td>
+                            <td>
+                                广西
+                            </td>
+                            <td>
+                                7:16
+                            </td>
+                            <td>
+                                点击查看
+                            </td>
+                            <td>
+                                点击查看
+                            </td>
+                            <td>
+                                [暂无下载]
+                            </td>
+                            <td>
+                                无
+                            </td>
+                        </tr>
+                    -->
+                    </tbody>
+                </table>
+            </div>
+            <div class="music" id="playmusic" style="text-align: center;"></div>
+        </div>
+    </div>
+    <div class="modal fade" id="red_team_modal" tabindex="-1" role="dialog" aria-labelledby="red_team_modalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="red_team_modalLabel">队伍详情</h4>
+                </div>
+                <div class="modal-body">
+                    <p>这里懒了,没搞头像出来 2333:</p>
+                    <p id="team_list"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal -->
+    </div>
+</body>
+<script>
+    var player_name_get = '{{playername}}';
+    var kill = 0;
+    var dead = 0;
+    var first_kill = 0;
+    var head_shot = 0;
+    var help_shot = 0;
+    var musicid = 39227624;
+    var autoplay = 0;
+    var matched = [];
+    var rank_time = [];
+    var rank = {};
+    var match_players = {};
+    var nowrank = 0;
+    var ico = '';
+    var banned = 0;
+    $(function () {
+        draw_team_list = function (matchid, team) {
+            try {
+                var draw = team == 'red' ? 'red_players' : 'blue_players';
+                var array = match_players[matchid][draw];
+                var html = '';
+                for (i = 0; i < array.length; i++) {
+                    html = html + '<a style="color:#2a6496;" href="//{{ request.get_host }}/player/' + array[i] + '">' + array[i] + '</a>&nbsp&nbsp&nbsp';
+                }
+            } catch {
+                alert("数据还没有准备好!");
+                return;
+            }
+            $('#team_list').html(html);
+            $('#red_team_modal').modal();
+        }
+        set_info = function () {
+            $("#player_name").text(player_name_get + "#" + nowrank);
+            var music_url = 'https://music.163.com/outchain/player?type=2&id=' + musicid + '&auto=' + autoplay + '&height=66';
+            $("#kill").text(kill);
+            $("#dead").text(dead);
+            $("#first_kill").text(first_kill);
+            $("#headshot").text(head_shot);
+            $("#helpshot").text(help_shot);
+            var kd = kill / dead;
+            kd = kd.toFixed(3);
+            $("#kd").text(kd);
+            var autograph_text = '中性稳定发挥.暂过多评价!';
+            if (banned == 0) {
+                if (kill == 0 || dead == 0)
+                    autograph_text = '刚注册不久的萌新!';
+                else if (dead > kill * 2)
+                    autograph_text = '恐怖的自动送头机器!你队友真惨!';
+                else if (kill > dead)
+                    if (head_shot > (dead / 1.3))
+                        autograph_text = '麻木的自动爆头机器!';
+                    else if (first_kill > (dead / 1.3))
+                        autograph_text = '超级厉害的突破机器!';
+                    else
+                        autograph_text = 'K2000 演员型杀人机器';
+                else
+                    autograph_text = '稳定发挥的神队友';
+            } else {
+                autograph_text = '此人开挂已被封禁';
+                $("#player_name").text(player_name_get + '#封禁');
+            }
+
+            $('#autograph').text(autograph_text);
+            $("#playmusic").html('<iframe frameborder="no" marginwidth="0" marginheight="0" width=330 height=86 src ="' + music_url + '" ></iframe>');
+            if ($('#autograph').text() == '查无此人') {
+                alert('找不到玩家!');
+                window.opener = null;
+                window.close();
+            }
+            var match_html = '';
+            for (i = 0; i < matched.length; i++) {
+                match_html = match_html + '<tr class="success"><td>' + matched[i] + '</td>'
+                    + '<td id = ' + matched[i] + '_map>正在加载中</td>'
+                    + '<td id = ' + matched[i] + '_time>正在加载中</td>'
+                    + '<td id=' + matched[i] + '_serverlocation>正在加载中</td>'
+                    + '<td id=' + matched[i] + '_score>正在加载中</td>'
+                    + '<td id=' + matched[i] + '_red><a style="color:#2a6496;" href="javascript:;" onclick="draw_team_list(\'' + matched[i] + '\',\'red\')">点击查看</a></td>'
+                    + '<td id=' + matched[i] + '_blue><a style="color:#2a6496;" href="javascript:;" onclick="draw_team_list(\'' + matched[i] + '\',\'blue\')">点击查看</a></td>'
+                    + '<td id=' + matched[i] + '_demo href="#">[暂无下载]</td>'
+                    + '<td id=' + matched[i] + '_cheat>正在加载中</td></tr>';
+            }
+            $("[data-toggle='popover']").popover();
+
+            $('#matched_list').html(match_html);
+            setTimeout(function () {
+                for (i = 0; i < matched.length; i++) {
+                    $.ajax({
+                        type: "GET",
+                        url: "//{{ request.get_host }}/api/get_match/",
+                        data: { 'matchid': matched[i] },
+                        async: true,
+                        success: function (data) {
+                            if (data.success) {
+                                var matchid = data.matchid;
+                                var h_time = data.time;
+                                var h_red_team_player = data.red_team_player;
+                                var h_blue_team_player = data.blue_team_player;
+                                var h_red_team_score = data.red_team_score;
+                                var h_blue_team_score = data.blue_team_score;
+                                var h_cheater = data.cheater;
+                                var h_server_location = data.server_location;
+                                var h_demoid = data.demoid;
+                                var score = isInArray(h_red_team_player, player_name_get) ? h_red_team_score + ':' + h_blue_team_score : h_blue_team_score + ':' + h_red_team_score;
+                                $('#' + matchid + '_time').text(h_time);
+                                $('#' + matchid + '_serverlocation').text(h_server_location);
+                                $('#' + matchid + '_score').text(score);
+                                $('#' + matchid + '_map').text(data.map);
+                                //$('#' + matchid + '_red').text(h_red_team_player);
+                                //$('#' + matchid + '_blue').text(h_blue_team_player);
+                                var cheater = h_cheater ? h_cheater : '无';
+                                $('#' + matchid + '_cheat').text(cheater);
+                                match_players[matchid] = {
+                                    'red_players': h_red_team_player,
+                                    'blue_players': h_blue_team_player
+                                };
+                            } else {
+                                alert('后方服务器错误!请联系管理员!!!');
+                            }
+                        }
+                    });
+                }
+
+            }, 3000);
+        }
+
+        $.ajax({
+            type: "GET",
+            url: "//{{ request.get_host }}/api/get_player/",
+            data: { 'name': player_name_get },
+            async: false,
+            success: function (data) {
+                if (data.success) {
+                    kill = data.info.kill;
+                    dead = data.info.dead;
+                    first_kill = data.info.first;
+                    head_shot = data.info.headshot;
+                    help_shot = data.info.help;
+                    musicid = data.info.music;
+                    autoplay = data.info.autoplay;
+                    matched = data.info.matched;
+                    rank = data.info.rank;
+                    nowrank = data.rank;
+                    banned = data.banned;
+                    var url = "//{{ request.get_host }}/static/images/players/" + data.ico;
+                    $('#playerAvatar').attr('src', url);
+                    for (let time in rank) {
+                        var tmp = {
+                            'time': time,
+                            'rank': rank[time]
+                        };
+                        rank_time.push(tmp);
+                    }
+                    rank_time.sort(function (a, b) {
+                        return Date.parse(a.time) - Date.parse(b.time);
+                    });
+                    //console.log(rank_time);
+                } else {
+                    alert('没有找到这个人!');
+                    set_null();
+                }
+            }
+        });
+        set_info();
+        var time = [];
+        var rank = [];
+        for (i = 0; i < rank_time.length; i++) {
+            time.push(rank_time[i]['time']);
+            rank.push(rank_time[i]['rank'])
+        }
+        console.log(time);
+        var data = {
+            //折线图需要为每个数据点设置一标签。这是显示在X轴上。
+            labels: time,
+            //数据集（y轴数据范围随数据集合中的data中的最大或最小数据而动态改变的）
+            datasets: [{
+                label: 'Rank',
+                borderColor: "#36A2EB", //路径颜色
+                pointBackgroundColor: "#36A2EB", //数据点颜色
+                pointBorderColor: "#fff", //数据点边框颜色
+                data: rank //对应的值
+            }]
+        };
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myLineChart = new Chart(ctx, {
+            type: 'line',
+            data: data,
+            options: {
+                title: {
+                    display: true,
+                    text: 'Rank分值变化' //标题
+                }
+            }
+        });
+        var radarChartData = {
+            labels: ["发挥水平", "送头水平", "突破能力", "爆头能力", "枪法[越高越差]"],
+            datasets: [
+                {
+                    label: "水平",
+                    fillColor: "rgba(205,205,0.2)",
+                    strokeColor: "rgba(205,205,0,1)",
+                    pointColor: "rgba(205,205,0,1)",
+                    pointStrokeColor: "#0000FF",
+                    pointHighlightFill: "#0000FF",
+                    borderColor: "#32CD32", //路径颜色
+                    pointBackgroundColor: "#32CD32", //数据点颜色
+                    pointHighlightStroke: "rgba(205,205,0,1)",
+                    data: [kill, dead, first_kill, head_shot, help_shot]
+                }
+            ]
+        };
+        var radar = document.getElementById("myRadar").getContext('2d');
+        var myLineChart = new Chart(radar, {
+            type: 'radar',
+            data: radarChartData,
+            options: {
+                title: {
+                    display: false,
+                    text: '雷达图' //标题
+                }
+            }
+        });
+
+    });
+    isInArray = function (arr, value) {
+        var index = $.inArray(value, arr);
+        if (index >= 0) {
+            return true;
+        }
+        return false;
+    }
+</script>
+
+</html>
