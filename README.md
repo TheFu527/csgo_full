@@ -3,7 +3,7 @@ HUOJI CSGO对战平台[正在开发]
 ===============
 写这个项目的时候初衷是为了提高CSGO的水平,以及让有些人有更多可能.
 捐助,你的捐助会让我更有时间开发这个平台:
-![image](https://github.com/huoji120/csgo_full/pic/alipay.jpg)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/alipay.jpg)
 功能特点:
  + 5人房间系统
  + 邀请码注册系统
@@ -28,12 +28,12 @@ HUOJI CSGO对战平台[正在开发]
 安装electron 并且安装客户端所需依赖项
 ## 开始搭建
 注册新浪云 -> 云应用 -> 创建应用,推荐配置如图:
-![image](https://github.com/huoji120/csgo_full/pic/1.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/1.png)
 购买对应的redis和mysql服务:
-![image](https://github.com/huoji120/csgo_full/pic/2.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/2.png)
 将代码的 django_www/www/www/url.py里面的mysql配置文件、redis配置、vaptcha、百度ak、服务器通讯密钥(重要)修改为你注册的
 将代码的 django_www/EzServer.py 的mysql和redis连接配置也改为和上面一样的东西
-![image](https://github.com/huoji120/csgo_full/pic/3.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/3.png)
 进入phpadmin 恢复备份文件 备份文件是 backup.sql
 之后修改 client/electron/main.js 的vaptcha_id为你的注册的vaptcha的信息,WebsiteDomain和Domain对应你的域名
 修改 django_www/www/www/view.py 里面的admin登陆账号密码(提示: 搜索huoji120)
@@ -43,25 +43,25 @@ HUOJI CSGO对战平台[正在开发]
 在客户端目录执行electron --no-sandbox ./ 如果黑屏请加--disable-gpu关掉显卡渲染(白屏黑屏很多时候和显卡有关)
 客户端目录有pack.cmd 那是打包命令.
 成功:
-![image](https://github.com/huoji120/csgo_full/pic/4.png)
-![image](https://github.com/huoji120/csgo_full/pic/5.png)
-![image](https://github.com/huoji120/csgo_full/pic/6.png)
-![image](https://github.com/huoji120/csgo_full/pic/7.png)
-![image](https://github.com/huoji120/csgo_full/pic/8.png)
-![image](https://github.com/huoji120/csgo_full/pic/9.png)
-![image](https://github.com/huoji120/csgo_full/pic/10.png)
-![image](https://github.com/huoji120/csgo_full/pic/11.png)
-![image](https://github.com/huoji120/csgo_full/pic/12.png)
-![image](https://github.com/huoji120/csgo_full/pic/13.png)
-![image](https://github.com/huoji120/csgo_full/pic/14.png)
-![image](https://github.com/huoji120/csgo_full/pic/15.png)
-![image](https://github.com/huoji120/csgo_full/pic/16.png)
-![image](https://github.com/huoji120/csgo_full/pic/17.png)
-![image](https://github.com/huoji120/csgo_full/pic/18.png)
-![image](https://github.com/huoji120/csgo_full/pic/19.png)
-![image](https://github.com/huoji120/csgo_full/pic/20.png)
-![image](https://github.com/huoji120/csgo_full/pic/21.png)
-![image](https://github.com/huoji120/csgo_full/pic/22.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/4.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/5.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/6.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/7.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/8.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/9.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/10.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/11.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/12.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/13.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/14.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/15.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/16.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/17.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/18.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/19.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/20.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/21.png)
+![image](https://github.com/huoji120/csgo_full/blob/master/pic/22.png)
 ## 最最后一步
 上传sourcemod服务器到你的CSGO服务器中
 打开sourcemode/addons/cfg/crow.ini文件
