@@ -15,30 +15,29 @@ GlobalVar.set_value('g_mysql_ip', '127.0.0.1')
 GlobalVar.set_value('g_mysql_port', 3306)
 GlobalVar.set_value('g_mysql_database', 'test')
 # redis:
-GlobalVar.set_value('g_redis_ip', 'njlyqvwfmlqo.redis.sae.sina.com.cn')
-GlobalVar.set_value('g_redis_port', 10208)
+GlobalVar.set_value('g_redis_ip', '127.0.0.1')
+GlobalVar.set_value('g_redis_port', 1060)
 GlobalVar.set_value('g_redis_password',
-                    't3NQ5M2rxp6nVO8NEeRhdO9BlX7kvu85w6E9pZrblGIS5vWdvFEwQm0kDFuf7uNG')
+                    'huoji120')
 GlobalVar.set_value('g_init_redis', False)
 GlobalVar.set_value('g_redis_server', redis.Redis(host=GlobalVar.get_value('g_redis_ip'), port=GlobalVar.get_value(
     'g_redis_port'), password=GlobalVar.get_value('g_redis_password')))
 
 # https://www.vaptcha.com
-GlobalVar.set_value('g_vaptcha_id', '5d3c1b28fc650e0040ca8ab2')
-GlobalVar.set_value('g_vaptcha_secretkey', 'c1b479fc5fe44512a6f9787718a46857')
+GlobalVar.set_value('g_vaptcha_id', '0')
+GlobalVar.set_value('g_vaptcha_secretkey', '0')
 websocket_clients = {}
 GlobalVar.set_value('g_websocket_clients', websocket_clients)
 # https://console.bce.baidu.com/
 
-GlobalVar.set_value('g_baidu_APP_ID', '17072038')
-GlobalVar.set_value('g_baidu_API_KEY', 'OQcG4ioRgwY8E31ImtYRTZtg')
-GlobalVar.set_value('g_baidu_APP_SECKEY', 'DNM2bt3pQuWAu8RfdXmAySCNm3tm7OKE')
+GlobalVar.set_value('g_baidu_APP_ID', '0')
+GlobalVar.set_value('g_baidu_API_KEY', '0')
+GlobalVar.set_value('g_baidu_APP_SECKEY', '0')
 GlobalVar.set_value('g_baidu_APP', AipImageCensor(
     GlobalVar.get_value('g_baidu_APP_ID'), GlobalVar.get_value('g_baidu_API_KEY'), GlobalVar.get_value('g_baidu_APP_SECKEY')))
 websocket_urlpatterns = [
     path('websocket/room/', web_socket.websocket_main),
 ]
-
 application = ProtocolTypeRouter({
     'websocket': AuthMiddlewareStack(
         URLRouter(
@@ -46,7 +45,6 @@ application = ProtocolTypeRouter({
         )
     ),
 })
-
 urlpatterns = [
     path('favicon.ico', serve, {'path': 'images/favicon.ico'}),
     path('ha4k1r_admin/', view.admin, name='admin_index'),
