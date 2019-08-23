@@ -63,6 +63,7 @@ HUOJI CSGO对战平台[正在开发]
 ![image](https://github.com/huoji120/csgo_full/pic/21.png)
 ![image](https://github.com/huoji120/csgo_full/pic/22.png)
 ## 最最后一步
+上传sourcemod服务器到你的CSGO服务器中
 打开sourcemode/addons/cfg/crow.ini文件
 修改里面的 服务器id和服务器通讯密钥
 访问 http://csgo.applinzi.com/ha4k1r_admin/ 点击增加服务器,填写你刚刚增加的服务器id即可拥有比赛服务器!
